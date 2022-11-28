@@ -9,7 +9,7 @@ public interface AgendaService {
 
 	Agenda caricaSingoloElemento(Long id);
 
-	Agenda caricaSingoloElementoEager(Long id);
+	Agenda caricaSingoloElementoEager(Long id, String username);
 
 	Agenda aggiorna(Agenda agendaInstance);
 

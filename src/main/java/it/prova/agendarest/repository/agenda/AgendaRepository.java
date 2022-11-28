@@ -9,8 +9,8 @@ import it.prova.agendarest.model.Agenda;
 
 public interface AgendaRepository extends CrudRepository<Agenda, Long>{
 
-	@Query("from Agenda a join fetch a.utente where a.id = ?1")
-	Agenda findSingleAgendaEager(Long id);
+	@Query("from Agenda a join fetch a.utente u where a.id = ?1 and u.id = ?2")
+	Agenda findSingleAgendaEager(Long idAgenda, Long idUtente);
 	
 	List<Agenda> findByDescrizione(String descrizione);
 	

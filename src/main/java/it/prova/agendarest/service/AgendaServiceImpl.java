@@ -41,9 +41,17 @@ public class AgendaServiceImpl implements AgendaService{
 	}
 
 	@Override
-	public Agenda caricaSingoloElementoEager(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+	public Agenda caricaSingoloElementoEager(Long id, String username) {
+		Utente utenteInSessione = utenteRepository.findByUsername(username).orElse(null);
+		if(utenteInSessione == null)
+			throw new NotFoundException("Utente non trovato.");
+		Agenda agendaReloaded = repository.findById(id).orElse(null);
+		if(agendaReloaded == null)
+			throw new NotFoundException("Agenda non trovata.");
+		
+		agendaReloaded.setUtente(utenteInSessione);
+		
+		return repository.findSingleAgendaEager(id,utenteInSessione.getId());
 	}
 
 	@Override
