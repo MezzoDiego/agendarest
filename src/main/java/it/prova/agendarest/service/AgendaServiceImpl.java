@@ -11,6 +11,7 @@ import it.prova.agendarest.model.Utente;
 import it.prova.agendarest.repository.agenda.AgendaRepository;
 import it.prova.agendarest.repository.utente.UtenteRepository;
 import it.prova.agendarest.web.api.exceptions.NotFoundException;
+import it.prova.agendarest.web.api.exceptions.NotYourAgendaException;
 
 @Service
 @Transactional(readOnly = true)
@@ -74,8 +75,19 @@ public class AgendaServiceImpl implements AgendaService{
 
 	@Override
 	@Transactional
-	public void rimuovi(Long idToRemove) {
-		// TODO Auto-generated method stub
+	public void rimuovi(Long idToRemove, String username) {
+		Agenda agendaReloaded = repository.findById(idToRemove).orElse(null);
+		if(agendaReloaded == null)
+			throw new NotFoundException("Agenda non trovata.");
+		
+		Utente utenteInSessione = utenteRepository.findByUsername(username).orElse(null);
+		if(utenteInSessione == null)
+			throw new NotFoundException("Utente non trovato.");
+		
+		if(!agendaReloaded.getUtente().getId().equals(utenteInSessione.getId()))
+			throw new NotYourAgendaException("Impossibile eliminare le agende degli altri utenti.");
+		
+		repository.deleteAgendasUtenteById(utenteInSessione.getId(), idToRemove);
 		
 	}
 

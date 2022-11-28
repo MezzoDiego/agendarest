@@ -15,7 +15,7 @@ public interface AgendaService {
 
 	Agenda inserisciNuovo(Agenda agendaInstance, String username);
 
-	void rimuovi(Long idToRemove);
+	void rimuovi(Long idToRemove, String username);
 
 	List<Agenda> findByExample(Agenda example);
 
