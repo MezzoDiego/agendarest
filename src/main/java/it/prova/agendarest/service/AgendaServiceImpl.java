@@ -57,9 +57,23 @@ public class AgendaServiceImpl implements AgendaService{
 
 	@Override
 	@Transactional
-	public Agenda aggiorna(Agenda agendaInstance) {
-		// TODO Auto-generated method stub
-		return null;
+	public Agenda aggiorna(Agenda agendaInstance, String username) {
+		Utente utenteInSessione = utenteRepository.findByUsername(username).orElse(null);
+		if(utenteInSessione == null)
+			throw new NotFoundException("Utente non trovato.");
+		
+		Agenda agendaReloaded = repository.findById(agendaInstance.getId()).orElse(null);
+		if(agendaReloaded == null)
+			throw new NotFoundException("Agenda non trovata.");
+		
+		if(!agendaReloaded.getUtente().getId().equals(utenteInSessione.getId()))
+			throw new NotYourAgendaException("Impossibile modificare le agende degli altri utenti.");
+		
+		agendaReloaded.setUtente(utenteInSessione);
+		agendaReloaded.setDescrizione(agendaInstance.getDescrizione());
+		agendaReloaded.setDataOraInizio(agendaInstance.getDataOraInizio());
+		agendaReloaded.setDataOraFine(agendaInstance.getDataOraFine());
+		return repository.save(agendaReloaded);
 	}
 
 	@Override

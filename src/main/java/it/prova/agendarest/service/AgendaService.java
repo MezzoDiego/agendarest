@@ -11,7 +11,7 @@ public interface AgendaService {
 
 	Agenda caricaSingoloElementoEager(Long id, String username);
 
-	Agenda aggiorna(Agenda agendaInstance);
+	Agenda aggiorna(Agenda agendaInstance, String username);
 
 	Agenda inserisciNuovo(Agenda agendaInstance, String username);
 
