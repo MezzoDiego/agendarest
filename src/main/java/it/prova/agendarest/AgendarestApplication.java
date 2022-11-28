@@ -1,5 +1,7 @@
 package it.prova.agendarest;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,8 +9,10 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import it.prova.agendarest.model.Agenda;
 import it.prova.agendarest.model.Ruolo;
 import it.prova.agendarest.model.Utente;
+import it.prova.agendarest.service.AgendaService;
 import it.prova.agendarest.service.RuoloService;
 import it.prova.agendarest.service.UtenteService;
 
@@ -19,6 +23,8 @@ public class AgendarestApplication implements CommandLineRunner{
 	private RuoloService ruoloServiceInstance;
 	@Autowired
 	private UtenteService utenteServiceInstance;
+	@Autowired
+	private AgendaService agendaServiceInstance;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(AgendarestApplication.class, args);
@@ -55,8 +61,9 @@ public class AgendarestApplication implements CommandLineRunner{
 			utenteServiceInstance.inserisciNuovo(classicUser);
 			// l'inserimento avviene come created ma io voglio attivarlo
 			utenteServiceInstance.changeUserAbilitation(classicUser.getId());
+		
 		}
-
+		
 		if (utenteServiceInstance.findByUsername("user1") == null) {
 			Utente classicUser1 = new Utente("user1", "user1", "Antonioo", "Verdii", new Date());
 			classicUser1.setEmail("u.user1@prova.it");
@@ -76,6 +83,7 @@ public class AgendarestApplication implements CommandLineRunner{
 			// l'inserimento avviene come created ma io voglio attivarlo
 			utenteServiceInstance.changeUserAbilitation(classicUser2.getId());
 		}
+		
 		
 	}
 

@@ -18,8 +18,10 @@ public class AgendaServiceImpl implements AgendaService{
 
 	@Override
 	public List<Agenda> listAllElements(boolean eager) {
-		// TODO Auto-generated method stub
-		return null;
+		if (eager)
+			return (List<Agenda>) repository.findAllAgendaEager();
+
+		return (List<Agenda>) repository.findAll();
 	}
 
 	@Override
@@ -43,8 +45,7 @@ public class AgendaServiceImpl implements AgendaService{
 	@Override
 	@Transactional
 	public Agenda inserisciNuovo(Agenda agendaInstance) {
-		// TODO Auto-generated method stub
-		return null;
+		return repository.save(agendaInstance);
 	}
 
 	@Override
@@ -62,7 +63,6 @@ public class AgendaServiceImpl implements AgendaService{
 
 	@Override
 	public List<Agenda> findByDescrizione(String descrizione) {
-		// TODO Auto-generated method stub
-		return null;
+		return repository.findByDescrizione(descrizione);
 	}
 }

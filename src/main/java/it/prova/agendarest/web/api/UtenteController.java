@@ -10,8 +10,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import it.prova.agendarest.dto.AgendaDTO;
 import it.prova.agendarest.model.Utente;
 import it.prova.agendarest.security.dto.UtenteInfoJWTResponseDTO;
+import it.prova.agendarest.service.AgendaService;
 import it.prova.agendarest.service.UtenteService;
 
 
@@ -21,6 +23,9 @@ public class UtenteController {
 
 	@Autowired
 	private UtenteService utenteService;
+	
+	@Autowired
+	private AgendaService agendaService;
 
 	// questa mi serve solo per capire se solo ADMIN vi ha accesso
 	@GetMapping("/testSoloAdmin")
@@ -42,5 +47,10 @@ public class UtenteController {
 
 		return ResponseEntity.ok(new UtenteInfoJWTResponseDTO(utenteLoggato.getNome(), utenteLoggato.getCognome(),
 				utenteLoggato.getUsername(), utenteLoggato.getEmail(), ruoli));
+	}
+	
+	@GetMapping("/listAllAgende")
+	public List<AgendaDTO> getAllAgende() {
+		return AgendaDTO.createAgendaDTOListFromModelList(agendaService.listAllElements(false));
 	}
 }
