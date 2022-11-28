@@ -17,7 +17,7 @@ public interface AgendaService {
 
 	void rimuovi(Long idToRemove, String username);
 
-	List<Agenda> findByExample(Agenda example);
+	List<Agenda> findByExample(Agenda example, String username);
 
 	List<Agenda> findByDescrizione(String descrizione);
 }

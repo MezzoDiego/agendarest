@@ -106,9 +106,13 @@ public class AgendaServiceImpl implements AgendaService{
 	}
 
 	@Override
-	public List<Agenda> findByExample(Agenda example) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Agenda> findByExample(Agenda example, String username) {
+		Utente utenteInSessione = utenteRepository.findByUsername(username).orElse(null);
+		if(utenteInSessione == null)
+			throw new NotFoundException("Utente non trovato.");
+		example.setUtente(utenteInSessione);
+		
+		return repository.findByExample(example);
 	}
 
 	@Override

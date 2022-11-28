@@ -74,4 +74,9 @@ public class AgendaController {
 		return AgendaDTO.buildAgendaDTOFromModel(agendaAggiornata);
 	}
 	
+	@PostMapping("/search")
+	public List<AgendaDTO> search(@RequestBody AgendaDTO example, Principal principal) {
+		return AgendaDTO.createAgendaDTOListFromModelList(agendaService.findByExample(example.buildAgendaModel(), principal.getName()));
+	}
+	
 }

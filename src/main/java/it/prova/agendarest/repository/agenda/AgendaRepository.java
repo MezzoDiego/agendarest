@@ -8,12 +8,11 @@ import org.springframework.data.repository.CrudRepository;
 
 import it.prova.agendarest.model.Agenda;
 
-public interface AgendaRepository extends CrudRepository<Agenda, Long>{
-
+public interface AgendaRepository extends CrudRepository<Agenda, Long>, CustomAgendaRepository{
 	@Query("from Agenda a join fetch a.utente u where a.id = ?1 and u.id = ?2")
 	Agenda findSingleAgendaEager(Long idAgenda, Long idUtente);
 	
-	List<Agenda> findByDescrizione(String descrizione);
+	List<Agenda> findByDescrizione(String descrizione); 
 	
 	@Query("select a from Agenda a join fetch a.utente u where u.id = ?1")
 	List<Agenda> findAllAgendaEager(Long id);
@@ -21,5 +20,4 @@ public interface AgendaRepository extends CrudRepository<Agenda, Long>{
 	@Modifying
 	@Query("delete from Agenda a where a in (select a from Agenda a join a.utente u where u.id = ?1 and a.id = ?2)")
 	void deleteAgendasUtenteById(Long idUtente, Long idAgenda);
-	
 }
