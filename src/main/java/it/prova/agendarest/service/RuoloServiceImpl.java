@@ -11,11 +11,11 @@ import it.prova.agendarest.repository.ruolo.RuoloRepository;
 
 @Service
 @Transactional(readOnly = true)
-public class RuoloServiceImpl implements RuoloService{
-	
+public class RuoloServiceImpl implements RuoloService {
+
 	@Autowired
 	private RuoloRepository ruoloRepository;
-	
+
 	@Override
 	public List<Ruolo> listAll() {
 		// TODO Auto-generated method stub
@@ -32,27 +32,26 @@ public class RuoloServiceImpl implements RuoloService{
 	@Transactional
 	public void aggiorna(Ruolo ruoloInstance) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	@Transactional
 	public void inserisciNuovo(Ruolo ruoloInstance) {
-		// TODO Auto-generated method stub
-		
+		ruoloRepository.save(ruoloInstance);
+
 	}
 
 	@Override
 	@Transactional
 	public void rimuovi(Long idToRemove) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public Ruolo cercaPerDescrizioneECodice(String descrizione, String codice) {
-		// TODO Auto-generated method stub
-		return null;
+		return ruoloRepository.findByDescrizioneAndCodice(descrizione, codice);
 	}
 
 }

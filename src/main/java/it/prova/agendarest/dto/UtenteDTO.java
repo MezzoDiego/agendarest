@@ -2,11 +2,14 @@ package it.prova.agendarest.dto;
 
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+import it.prova.agendarest.model.Agenda;
 import it.prova.agendarest.model.Ruolo;
 import it.prova.agendarest.model.StatoUtente;
 import it.prova.agendarest.model.Utente;
@@ -38,6 +41,8 @@ public class UtenteDTO {
 	private StatoUtente stato;
 
 	private Long[] ruoliIds;
+	
+	private Set<Agenda> agende = new HashSet<>();
 
 	public UtenteDTO() {
 	}
@@ -130,6 +135,14 @@ public class UtenteDTO {
 	public void setRuoliIds(Long[] ruoliIds) {
 		this.ruoliIds = ruoliIds;
 	}
+	
+	public Set<Agenda> getAgende() {
+		return agende;
+	}
+
+	public void setAgende(Set<Agenda> agende) {
+		this.agende = agende;
+	}
 
 	public Utente buildUtenteModel(boolean includeIdRoles) {
 		Utente result = new Utente(this.id, this.username, this.password, this.nome, this.cognome, this.email,
@@ -137,6 +150,9 @@ public class UtenteDTO {
 		if (includeIdRoles && ruoliIds != null)
 			result.setRuoli(Arrays.asList(ruoliIds).stream().map(id -> new Ruolo(id)).collect(Collectors.toSet()));
 
+		if(this.agende.size() > 0)
+			result.setAgende(agende);
+		
 		return result;
 	}
 

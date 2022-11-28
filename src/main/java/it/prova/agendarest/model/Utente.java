@@ -138,6 +138,14 @@ public class Utente {
 	public void setStato(StatoUtente stato) {
 		this.stato = stato;
 	}
+	
+	public Set<Agenda> getAgende() {
+		return agende;
+	}
+
+	public void setAgende(Set<Agenda> agende) {
+		this.agende = agende;
+	}
 
 	public boolean isAdmin() {
 		for (Ruolo ruoloItem : ruoli) {

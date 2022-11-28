@@ -24,8 +24,7 @@ public class AgendaServiceImpl implements AgendaService{
 
 	@Override
 	public Agenda caricaSingoloElemento(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+		return repository.findById(id).orElse(null);
 	}
 
 	@Override

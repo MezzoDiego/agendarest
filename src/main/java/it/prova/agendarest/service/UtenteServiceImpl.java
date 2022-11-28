@@ -1,5 +1,6 @@
 package it.prova.agendarest.service;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import it.prova.agendarest.model.StatoUtente;
 import it.prova.agendarest.model.Utente;
 import it.prova.agendarest.repository.utente.UtenteRepository;
 
@@ -28,8 +30,7 @@ public class UtenteServiceImpl implements UtenteService{
 
 	@Override
 	public Utente caricaSingoloUtente(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+		return repository.findById(id).orElse(null);
 	}
 
 	@Override
@@ -48,7 +49,10 @@ public class UtenteServiceImpl implements UtenteService{
 	@Override
 	@Transactional
 	public void inserisciNuovo(Utente utenteInstance) {
-		// TODO Auto-generated method stub
+		utenteInstance.setStato(StatoUtente.CREATO);
+		utenteInstance.setPassword(passwordEncoder.encode(utenteInstance.getPassword()));
+		utenteInstance.setDateCreated(new Date());
+		repository.save(utenteInstance);
 		
 	}
 
@@ -80,14 +84,22 @@ public class UtenteServiceImpl implements UtenteService{
 	@Override
 	@Transactional
 	public void changeUserAbilitation(Long utenteInstanceId) {
-		// TODO Auto-generated method stub
+		Utente utenteInstance = caricaSingoloUtente(utenteInstanceId);
+		if (utenteInstance == null)
+			throw new RuntimeException("Elemento non trovato.");
+
+		if (utenteInstance.getStato() == null || utenteInstance.getStato().equals(StatoUtente.CREATO))
+			utenteInstance.setStato(StatoUtente.ATTIVO);
+		else if (utenteInstance.getStato().equals(StatoUtente.ATTIVO))
+			utenteInstance.setStato(StatoUtente.DISABILITATO);
+		else if (utenteInstance.getStato().equals(StatoUtente.DISABILITATO))
+			utenteInstance.setStato(StatoUtente.ATTIVO);
 		
 	}
 
 	@Override
 	public Utente findByUsername(String username) {
-		// TODO Auto-generated method stub
-		return null;
+		return repository.findByUsername(username).orElse(null);
 	}
 
 }
