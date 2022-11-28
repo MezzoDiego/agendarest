@@ -10,6 +10,7 @@ import it.prova.agendarest.model.Agenda;
 import it.prova.agendarest.model.Utente;
 import it.prova.agendarest.repository.agenda.AgendaRepository;
 import it.prova.agendarest.repository.utente.UtenteRepository;
+import it.prova.agendarest.web.api.exceptions.NotFoundException;
 
 @Service
 @Transactional(readOnly = true)
@@ -26,7 +27,7 @@ public class AgendaServiceImpl implements AgendaService{
 		if (eager) {
 			Utente utenteInSessione = utenteRepository.findByUsername(username).orElse(null);
 			if(utenteInSessione == null)
-				throw new RuntimeException("Username null.");
+				throw new NotFoundException("Utente non trovato.");
 			
 			return (List<Agenda>) repository.findAllAgendaEager(utenteInSessione.getId());
 		}
@@ -54,7 +55,12 @@ public class AgendaServiceImpl implements AgendaService{
 
 	@Override
 	@Transactional
-	public Agenda inserisciNuovo(Agenda agendaInstance) {
+	public Agenda inserisciNuovo(Agenda agendaInstance, String username) {
+		Utente utenteInSessione = utenteRepository.findByUsername(username).orElse(null);
+		if(utenteInSessione == null)
+			throw new NotFoundException("Utente non trovato.");
+		
+		agendaInstance.setUtente(utenteInSessione);
 		return repository.save(agendaInstance);
 	}
 

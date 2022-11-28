@@ -13,7 +13,7 @@ public interface AgendaService {
 
 	Agenda aggiorna(Agenda agendaInstance);
 
-	Agenda inserisciNuovo(Agenda agendaInstance);
+	Agenda inserisciNuovo(Agenda agendaInstance, String username);
 
 	void rimuovi(Long idToRemove);
 
