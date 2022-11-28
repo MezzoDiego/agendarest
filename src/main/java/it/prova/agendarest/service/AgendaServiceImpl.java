@@ -7,7 +7,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import it.prova.agendarest.model.Agenda;
+import it.prova.agendarest.model.Utente;
 import it.prova.agendarest.repository.agenda.AgendaRepository;
+import it.prova.agendarest.repository.utente.UtenteRepository;
 
 @Service
 @Transactional(readOnly = true)
@@ -15,11 +17,19 @@ public class AgendaServiceImpl implements AgendaService{
 
 	@Autowired
 	private AgendaRepository repository;
+	
+	@Autowired
+	private UtenteRepository utenteRepository;
 
 	@Override
-	public List<Agenda> listAllElements(boolean eager) {
-		if (eager)
-			return (List<Agenda>) repository.findAllAgendaEager();
+	public List<Agenda> listAllElements(boolean eager, String username) {
+		if (eager) {
+			Utente utenteInSessione = utenteRepository.findByUsername(username).orElse(null);
+			if(utenteInSessione == null)
+				throw new RuntimeException("Username null.");
+			
+			return (List<Agenda>) repository.findAllAgendaEager(utenteInSessione.getId());
+		}
 
 		return (List<Agenda>) repository.findAll();
 	}

@@ -5,7 +5,7 @@ import java.util.List;
 import it.prova.agendarest.model.Agenda;
 
 public interface AgendaService {
-	List<Agenda> listAllElements(boolean eager);
+	List<Agenda> listAllElements(boolean eager, String username);
 
 	Agenda caricaSingoloElemento(Long id);
 

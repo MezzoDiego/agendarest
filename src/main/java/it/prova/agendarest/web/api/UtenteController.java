@@ -51,6 +51,6 @@ public class UtenteController {
 	
 	@GetMapping("/listAllAgende")
 	public List<AgendaDTO> getAllAgende() {
-		return AgendaDTO.createAgendaDTOListFromModelList(agendaService.listAllElements(false));
+		return AgendaDTO.createAgendaDTOListFromModelList(agendaService.listAllElements(false, null));
 	}
 }
